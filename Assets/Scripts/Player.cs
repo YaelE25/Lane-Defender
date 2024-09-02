@@ -1,23 +1,20 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.InputSystem;
-
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
+    
     [SerializeField] private Rigidbody2D rb2D;
     [SerializeField] private float tankSpeed;
     private float vertical;
 
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
+    
     public void Move(InputAction.CallbackContext context)
     {
         //run = true

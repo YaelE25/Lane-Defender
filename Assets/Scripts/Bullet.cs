@@ -7,6 +7,7 @@ public class Bullet : MonoBehaviour
     public float speed;
     private Rigidbody2D rb;
     [SerializeField] private float bulletExplodeTime;
+    [SerializeField] private Animator animator;
     // Start is called before the first frame update
     void Start()
     {
@@ -25,13 +26,12 @@ public class Bullet : MonoBehaviour
         if(collision.gameObject.tag == "Enemy")
         {
             speed = 0;
-            StartCoroutine(bulletBreak());
+            animator.SetBool("Explode", true);
         }
     }
 
-    private IEnumerator bulletBreak()
+    public void  bulletBreak()
     {
-        yield return new WaitForSeconds(bulletExplodeTime);
         Destroy(gameObject);
     }
 }

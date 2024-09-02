@@ -11,6 +11,9 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float deathTime = 5f;
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private GameManager gm;
+    [SerializeField] private Animator animator;
+    [SerializeField] private AudioClip _hurtSound;
+    [SerializeField] private AudioClip _deathSound;
 
     // Start is called before the first frame update
     void Start()
@@ -28,6 +31,8 @@ public class Enemy : MonoBehaviour
         else if (Health <= 0)
         {
             rb.velocity = new Vector2(0, 0);
+            animator.SetBool("Dead", true);
+            AudioSource.PlayClipAtPoint(_deathSound, transform.position);
         }
     }
 
@@ -36,7 +41,16 @@ public class Enemy : MonoBehaviour
         if(collision.gameObject.tag == "Bullet")
         {
             Health -= 1;
+            gm.AddScore();
+            AudioSource.PlayClipAtPoint(_hurtSound, transform.position);
             StartCoroutine(bulletStop());
+            animator.SetBool("Stunned", true);
+            animator.SetBool("Walking", false);
+        }
+
+        if(collision.gameObject.tag == "Player")
+        {
+            gm.LoseHealth();
         }
     }
 
@@ -51,5 +65,7 @@ public class Enemy : MonoBehaviour
         }
         yield return new WaitForSeconds(haltTime);
         Speed = maxSpeed;
+        animator.SetBool("Stunned", false);
+        animator.SetBool("Walking", true);
     }
 }
